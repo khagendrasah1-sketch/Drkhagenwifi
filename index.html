@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Khagen's Wi-Fi</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('https://images.unsplash.com/photo-1581092334520-6e2c2d9e2d8b?auto=format&fit=crop&w=1050&q=80') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+}
+.portal-container {
+    background: rgba(0,0,0,0.65);
+    padding: 40px 25px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+h1 { margin-bottom: 10px; font-size: 1.8em; }
+p { margin-bottom: 15px; font-size: 1em; color: #e0e0e0; }
+.disclaimer {
+    background: rgba(255,255,255,0.15);
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    color: #fff;
+    text-align: left;
+}
+.disclaimer i { color: #ffdd57; margin-right: 8px; }
+#regretMsg {
+    font-size: 1em;
+    font-weight: bold;
+    color: #ffdd57;
+    margin-bottom: 15px;
+    animation: fadeIn 1s ease-in-out;
+}
+input[type="password"] {
+    width: 80%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+}
+button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+button i { margin-left: 8px; }
+button:hover { background: #ff4757; }
+button:disabled { background: #aaa; cursor: not-allowed; }
+#msg {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1em;
+    color: #00ffb3;
+}
+#timer { margin-top: 10px; font-weight: bold; }
+.progress-container { background: #555; border-radius: 10px; margin: 15px auto; width: 80%; height: 12px; overflow: hidden; }
+.progress-bar { height: 100%; width: 0; background: #00ffb3; border-radius: 10px; transition: width 0.3s; }
+.footer { margin-top: 20px; font-size: 0.85em; color: #f0f0f0; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+</style>
+</head>
+<body>
+<div class="portal-container">
+    <h1><i class="fas fa-wifi"></i> Dr. Khagen's Wi-Fi</h1>
+    <div class="disclaimer">
+        <i class="fas fa-exclamation-triangle"></i>
+        Please do not share this Wi-Fi with anyone else. Misuse may result in suspension of access.
+    </div>
+
+    <div id="regretMsg"></div>
+
+    <p>Enter the password to access the internet.</p>
+    <input type="password" id="pw" placeholder="Enter password">
+    <br>
+    <button id="connectBtn" onclick="checkPassword()">Connect <i class="fas fa-arrow-right"></i></button>
+    
+    <p id="msg"></p>
+    <p id="timer"></p>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <p class="footer"><i class="fas fa-book"></i> Use responsibly. Enjoy your stay!</p>
+</div>
+
+<script>
+const correctPassword = "wifi123"; // Change password here
+const connectBtn = document.getElementById("connectBtn");
+const progressBar = document.getElementById("progressBar");
+const msg = document.getElementById("msg");
+const regretMsg = document.getElementById("regretMsg");
+
+const regretMessages = [
+    "Wow… you’re using this Wi-Fi for free… try not to break it!",
+    "Congrats! Free Wi-Fi! Don’t waste this rare blessing!",
+    "You should be grateful… our Wi-Fi is too good to misuse!",
+    "Lucky you! Don’t let your roommate steal this Wi-Fi!",
+    "Free internet? Yes. Respect it? We hope so…",
+    "Using free Wi-Fi? Regret nothing… except wasting it!"
+];
+
+function showRegret(){
+    const randomIndex = Math.floor(Math.random() * regretMessages.length);
+    regretMsg.innerHTML = regretMessages[randomIndex];
+}
+window.onload = showRegret;
+
+function checkPassword(){
+    const input = document.getElementById("pw").value;
+    if(input === correctPassword){
+        connectBtn.disabled = true;
+        msg.innerHTML = "Password correct! Countdown starting...";
+        startTimer();
+    } else {
+        msg.style.color = "#ff6b6b";
+        msg.innerHTML = "Wrong password, try again.";
+    }
+}
+
+function startTimer(){
+    let time = 10;
+    const timerDisplay = document.getElementById("timer");
+    const totalTime = time;
+    const interval = setInterval(() => {
+        timerDisplay.innerHTML = "Access will start in " + time + " seconds";
+        progressBar.style.width = ((totalTime - time + 1)/totalTime*100) + "%";
+        time--;
+        if(time < 0){
+            clearInterval(interval);
+            window.location.href = "https://google.com";
+        }
+    }, 1000);
+}
+</script>
+</body>
+</html>
